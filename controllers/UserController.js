@@ -1,6 +1,6 @@
-import { USER_NOT_FOUND, USER_EXISTS } from '../utils/constants';
-import { NotFoundError, BadRequestError, ConflictError } from '../utils/errors/index';
-import UserModel from '../models/userModel';
+const { USER_NOT_FOUND, USER_EXISTS } = require('../utils/constants');
+const { NotFoundError, BadRequestError, ConflictError } = require('../utils/errors/index');
+const UserModel = require('../models/userModel');
 
 async function getUser(req, res, next) {
   try {
@@ -44,4 +44,7 @@ async function updateUserInfo(req, res, next) {
   }
 }
 
-export default { getUser, updateUserInfo };
+module.exports = {
+  getUser,
+  updateUserInfo,
+};

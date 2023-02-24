@@ -1,5 +1,5 @@
-import { Schema, model, Types } from 'mongoose';
-import validator from 'validator';
+const { Schema, model, Types } = require('mongoose');
+const validator = require('validator');
 
 const movieSchema = new Schema({
   country: {
@@ -65,4 +65,4 @@ const movieSchema = new Schema({
   },
 });
 
-export default model('movie', movieSchema);
+module.exports = model('movie', movieSchema);

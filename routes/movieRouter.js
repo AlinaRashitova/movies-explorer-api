@@ -1,8 +1,6 @@
-import { celebrate, Joi } from 'celebrate';
-import { Router } from 'express';
-import MovieController from '../controllers/MovieController';
-
-const router = Router();
+const { celebrate, Joi } = require('celebrate');
+const router = require('express').Router();
+const MovieController = require('../controllers/MovieController');
 
 router.get('', MovieController.getMovies);
 
@@ -28,4 +26,4 @@ router.delete('/:id', celebrate({
   }),
 }), MovieController.deleteMovie);
 
-export default router;
+module.exports = router;

@@ -1,8 +1,6 @@
-import { celebrate, Joi } from 'celebrate';
-import { Router } from 'express';
-import UserController from '../controllers/UserController';
-
-const router = Router();
+const { celebrate, Joi } = require('celebrate');
+const router = require('express').Router();
+const UserController = require('../controllers/UserController');
 
 router.get('/me', UserController.getUser);
 router.patch('/me', celebrate({
@@ -12,4 +10,4 @@ router.patch('/me', celebrate({
   }),
 }), UserController.updateUserInfo);
 
-export default router;
+module.exports = router;

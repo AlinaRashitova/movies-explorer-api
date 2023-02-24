@@ -1,21 +1,17 @@
-import express from 'express';
-import helmet from 'helmet';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import { errors as celebrateErrorHandler } from 'celebrate';
+const express = require('express');
+const helmet = require('helmet');
+const mongoose = require('mongoose');
+const { errors } = require('celebrate');
 
-import limiter from './middlewares/limiterMiddleware';
-import errorHandler from './middlewares/errorMiddleware';
-import reqLogger from './middlewares/reqLogMiddleware';
-import errLogger from './middlewares/errLogMiddleware';
+const limiter = require('./middlewares/limiterMiddleware');
+const errorHandler = require('./middlewares/errorMiddleware');
+const reqLogger = require('./middlewares/reqLogMiddleware');
+const errLogger = require('./middlewares/errLogMiddleware');
 
-import router from './routes/index';
-
-dotenv.config();
+const router = require('./routes/index');
+const config = require('./utils/config');
 
 const app = express();
-
-const { PORT = 3000 } = process.env;
 
 const allowedCors = [
   'https://movie.alinarashitova.nomoredomains.work',
@@ -24,7 +20,7 @@ const allowedCors = [
 ];
 
 mongoose.set('strictQuery', false);
-mongoose.connect('mongodb://localhost:27017/moviedb', {
+mongoose.connect(config.MONGODB_URL, {
   useNewUrlParser: true,
 });
 
@@ -56,6 +52,7 @@ app.use((req, res, next) => {
 
 app.use('/', router);
 app.use(errLogger);
-app.use(celebrateErrorHandler());
+app.use(errors());
 app.use(errorHandler);
-app.listen(PORT);
+
+app.listen(config.PORT);

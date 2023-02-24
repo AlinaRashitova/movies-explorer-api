@@ -1,6 +1,6 @@
-import MovieModel from '../models/movieModel';
-import { NotFoundError, ForbiddenError, BadRequestError } from '../utils/errors/index';
-import { MOVIE_NOT_FOUND, NO_RIGHTS } from '../utils/constants';
+const MovieModel = require('../models/movieModel');
+const { NotFoundError, ForbiddenError, BadRequestError } = require('../utils/errors/index');
+const { MOVIE_NOT_FOUND, NO_RIGHTS } = require('../utils/constants');
 
 async function getMovies(req, res, next) {
   try {
@@ -49,4 +49,8 @@ async function deleteMovie(req, res, next) {
   }
 }
 
-export default { getMovies, createMovie, deleteMovie };
+module.exports = {
+  getMovies,
+  createMovie,
+  deleteMovie,
+};

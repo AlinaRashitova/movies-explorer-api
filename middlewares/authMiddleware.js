@@ -1,10 +1,9 @@
-import jwt from 'jsonwebtoken';
-import { UnauthorizedError } from '../utils/errors/index';
-import { AUTH_REQUIRED, TOKEN_WRONG_TYPE } from '../utils/constants';
+const jwt = require('jsonwebtoken');
+const config = require('../utils/config');
+const { UnauthorizedError } = require('../utils/errors/index');
+const { AUTH_REQUIRED, TOKEN_WRONG_TYPE } = require('../utils/constants');
 
-const { JWT_SECRET = 'secret-key' } = process.env;
-
-export default function auth(req, res, next) {
+module.exports = (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
@@ -17,10 +16,10 @@ export default function auth(req, res, next) {
     }
 
     const token = authorization.replace('Bearer ', '');
-    const payload = jwt.verify(token, JWT_SECRET);
+    const payload = jwt.verify(token, config.JWT_KEY);
     req.user = payload;
   } catch (err) {
     next(new UnauthorizedError(TOKEN_WRONG_TYPE));
   }
   next();
-}
+};

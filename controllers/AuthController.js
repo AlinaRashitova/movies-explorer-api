@@ -1,10 +1,9 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { BadRequestError, ConflictError, UnauthorizedError } from '../utils/errors/index';
-import UserModel from '../models/userModel';
-import { SAULT_NUMBER, USER_EXISTS, AUTH_ERROR } from '../utils/constants';
-
-const { JWT_SECRET = 'secret-key' } = process.env;
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const config = require('../utils/config');
+const { BadRequestError, ConflictError, UnauthorizedError } = require('../utils/errors/index');
+const UserModel = require('../models/userModel');
+const { SAULT_NUMBER, USER_EXISTS, AUTH_ERROR } = require('../utils/constants');
 
 async function createUser(req, res, next) {
   try {
@@ -37,7 +36,7 @@ async function login(req, res, next) {
     if (user === null || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedError(AUTH_ERROR);
     }
-    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ _id: user._id }, config.JWT, { expiresIn: '7d' });
     res.send({
       token,
       name: user.name,
@@ -48,4 +47,7 @@ async function login(req, res, next) {
   }
 }
 
-export default { createUser, login };
+module.exports = {
+  createUser,
+  login,
+};

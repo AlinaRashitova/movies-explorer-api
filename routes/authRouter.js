@@ -1,8 +1,6 @@
-import { celebrate, Joi } from 'celebrate';
-import { Router } from 'express';
-import AuthController from '../controllers/AuthController';
-
-const router = Router();
+const { celebrate, Joi } = require('celebrate');
+const router = require('express').Router();
+const AuthController = require('../controllers/AuthController');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -19,4 +17,4 @@ router.post('/signup', celebrate({
   }),
 }), AuthController.createUser);
 
-export default router;
+module.exports = router;
