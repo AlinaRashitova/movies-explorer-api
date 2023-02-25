@@ -36,7 +36,7 @@ async function login(req, res, next) {
     if (user === null || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedError(AUTH_ERROR);
     }
-    const token = jwt.sign({ _id: user._id }, config.JWT, { expiresIn: '7d' });
+    const token = jwt.sign({ _id: user._id }, config.JWT_KEY, { expiresIn: '7d' });
     res.send({
       token,
       name: user.name,
