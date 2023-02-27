@@ -13,10 +13,8 @@ async function getMovies(req, res, next) {
 
 async function createMovie(req, res, next) {
   try {
-    const owner = req.body._id;
-    const movie = await MovieModel.save(owner).populate(
-      'owner',
-    );
+    const owner = req.user._id;
+    const movie = await MovieModel.create({ ...req.body, owner });
     res.send(movie);
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -29,13 +27,11 @@ async function createMovie(req, res, next) {
 
 async function deleteMovie(req, res, next) {
   try {
-    const movie = await MovieModel.findById(req.params.id).populate(
-      'owner',
-    );
+    const movie = await MovieModel.findById(req.params._id);
     if (movie === null) {
       throw new NotFoundError(MOVIE_NOT_FOUND);
     }
-    if (movie.owner.id !== req.user._id) {
+    if (movie.owner.toString() !== req.user._id) {
       throw new ForbiddenError(NO_RIGHTS);
     }
     await movie.delete();

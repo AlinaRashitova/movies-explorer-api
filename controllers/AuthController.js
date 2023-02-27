@@ -7,10 +7,10 @@ const { SAULT_NUMBER, USER_EXISTS, AUTH_ERROR } = require('../utils/constants');
 
 async function createUser(req, res, next) {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
     const hash = await bcrypt.hash(password, SAULT_NUMBER);
     const user = await UserModel.create({
-      name: req.body.name,
+      name,
       email,
       password: hash,
     });
